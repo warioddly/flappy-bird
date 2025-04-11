@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flappy_bird/game.dart';
 import 'package:flutter/material.dart';
@@ -9,14 +10,28 @@ import 'package:flutter/material.dart';
 const double pipeWidth = 50;
 const double pipeHeight = 350;
 const double pipePairsGap = 300.0;
-const double _pipesSpeed = 1.0;
+const double _pipesSpeed = 2.0;
 
 class Pipe extends PositionComponent {
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+
+    debugColor = Colors.transparent;
+    debugMode = true;
+
     size = Vector2(pipeWidth, pipeHeight);
+
+    priority = 1;
+
+    add(
+      RectangleHitbox(
+        size: Vector2(pipeWidth, pipeHeight),
+        position: position,
+        collisionType: CollisionType.passive,
+      ),
+    );
   }
 
 }

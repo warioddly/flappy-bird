@@ -2,12 +2,13 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 
-class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents {
+class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDetection {
 
   FlappyBirdGame({
     super.camera,
     super.world,
-  });
+  }) {
+  }
 
   @override
   Future<void> onLoad() async {

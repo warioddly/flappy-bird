@@ -8,6 +8,7 @@ import 'game.dart';
 void main() {
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Builder(
         builder: (context) {
           final size = MediaQuery.sizeOf(context);

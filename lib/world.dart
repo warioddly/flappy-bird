@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flappy_bird/bird.dart';
+import 'package:flappy_bird/ground.dart';
 import 'package:flappy_bird/pipe.dart';
 
 class MyWorld extends World {
@@ -11,6 +12,9 @@ class MyWorld extends World {
     await super.onLoad();
     await add(Bird());
     await add(PipePairComponent());
+    await add(
+        Ground()
+    );
   }
 
 
