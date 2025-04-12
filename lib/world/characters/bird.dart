@@ -2,7 +2,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flappy_bird/game.dart';
-import 'package:flappy_bird/pipe.dart';
+import 'package:flappy_bird/world/objects/pipe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -66,18 +66,13 @@ class Bird extends SpriteAnimationComponent with HasGameRef<FlappyBirdGame>, Key
 
     if (position.y > gameRef.size.y) {
       isDead = true;
-      position.y = gameRef.size.y;
-      velocityY = 0;
     }
   }
 
   @override
-  bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+  bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed)  {
     if (event is KeyDownEvent && keysPressed.contains(LogicalKeyboardKey.space)) {
         jump();
-    }
-    else if (event is KeyDownEvent && keysPressed.contains(LogicalKeyboardKey.escape)) {
-      isDead = false;
     }
     return true;
   }
@@ -97,6 +92,9 @@ class Bird extends SpriteAnimationComponent with HasGameRef<FlappyBirdGame>, Key
     if (other is Pipe) {
       isDead = true;
       velocityY = 0;
+      // game.pauseGame();
+      game.isPaused = true;
+      game.overlays.add('restart');
     }
   }
 

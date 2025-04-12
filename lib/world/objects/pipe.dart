@@ -9,10 +9,14 @@ import 'package:flutter/material.dart';
 
 const double pipeWidth = 50;
 const double pipeHeight = 350;
-const double pipePairsGap = 300.0;
+const double pipePairsGap = 250.0;
 const double _pipesSpeed = 2.0;
 
 class Pipe extends PositionComponent {
+
+  final double pipeWidth = 52;
+  final double pipeHeight = 320;
+  final double capHeight = 24;
 
   @override
   Future<void> onLoad() async {
@@ -21,9 +25,8 @@ class Pipe extends PositionComponent {
     debugColor = Colors.transparent;
     debugMode = true;
 
-    size = Vector2(pipeWidth, pipeHeight);
-
     priority = 1;
+    size = Vector2(pipeWidth, pipeHeight);
 
     add(
       RectangleHitbox(
@@ -32,6 +35,7 @@ class Pipe extends PositionComponent {
         collisionType: CollisionType.passive,
       ),
     );
+
   }
 
 }
@@ -40,15 +44,7 @@ class PipeTop extends Pipe {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-  }
-
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-    canvas.drawRect(
-      Rect.fromLTWH(position.x, position.y, size.x, size.y),
-      Paint()..color = Colors.green,
-    );
+    // angle = 3.14;
   }
 
 }
@@ -57,16 +53,9 @@ class PipeBottom extends Pipe {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    // angle = 0;
   }
 
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-    canvas.drawRect(
-      Rect.fromLTWH(position.x, position.y, size.x, size.y),
-      Paint()..color = Colors.green,
-    );
-  }
 
 }
 
