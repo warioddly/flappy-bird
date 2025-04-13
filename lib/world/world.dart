@@ -7,10 +7,19 @@ import 'package:flutter/services.dart';
 
 class MyWorld extends World with HasGameRef<FlappyBirdGame>, KeyboardHandler {
 
+  late Bird _bird;
+
+  Bird get bird => _bird;
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    await addAll([Bird(), PipePairComponent(), Ground()]);
+    await addAll([
+      _bird = Bird(),
+      PipePairComponent(),
+      Ground(),
+      ScreenHitbox()..debugMode = true
+    ]);
   }
 
   @override

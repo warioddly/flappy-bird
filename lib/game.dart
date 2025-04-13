@@ -3,11 +3,11 @@ import 'package:flame/game.dart';
 import 'package:flappy_bird/overlays/fps.dart';
 import 'package:flappy_bird/world/world.dart';
 
-class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDetection {
+class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDetection, TapDetector {
 
   bool isPaused = true;
 
-  FlappyBirdGame({super.camera, super.world});
+  FlappyBirdGame({super.camera});
 
   @override
   Future<void> onLoad() async {
@@ -18,7 +18,7 @@ class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents, HasCol
 
   @override
   void update(double dt) {
-    if (isPaused) return;
+    // if (isPaused) return;
     super.update(dt);
   }
 
@@ -51,8 +51,13 @@ class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents, HasCol
     if (overlays.isActive('restart')) {
       overlays.remove('restart');
     }
-    // removeAll(children);
     onLoad();
+  }
+
+  @override
+  void onTap() {
+    super.onTap();
+    (world as MyWorld).bird.jump();
   }
 
 }

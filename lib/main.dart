@@ -17,18 +17,17 @@ void main() {
           final size = MediaQuery.sizeOf(context);
           return GameWidget<FlappyBirdGame>(
             game: FlappyBirdGame(
-              world: MyWorld(),
               camera: CameraComponent.withFixedResolution(
                 width: size.width,
                 height: size.height,
               ),
             ),
-            initialActiveOverlays: ['menu'],
-            overlayBuilderMap: {
-              'menu': (_, game) => MenuOverlay(game: game),
-              'pause': (_, game) => PauseOverlay(game: game),
-              'restart': (_, game) => RestartOverlay(game: game),
-            },
+            // initialActiveOverlays: ['menu'],
+            // overlayBuilderMap: {
+            //   'menu': (_, game) => MenuOverlay(game: game),
+            //   'pause': (_, game) => PauseOverlay(game: game),
+            //   'restart': (_, game) => RestartOverlay(game: game),
+            // },
           );
         },
       )

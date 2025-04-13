@@ -1,13 +1,17 @@
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flappy_bird/game.dart';
 import 'package:flappy_bird/world/objects/pipe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 
-class Bird extends SpriteAnimationComponent with HasGameRef<FlappyBirdGame>, KeyboardHandler, CollisionCallbacks {
+class Bird extends SpriteAnimationComponent with
+    HasGameRef<FlappyBirdGame>,
+    KeyboardHandler,
+    CollisionCallbacks,
+    TapCallbacks {
 
   double gravity = 1000;
   double jumpVelocity = -300;
@@ -40,8 +44,8 @@ class Bird extends SpriteAnimationComponent with HasGameRef<FlappyBirdGame>, Key
     );
 
     add(
-        RectangleHitbox(
-          size: Vector2(50, 50),
+        CircleHitbox(
+          radius: 25,
           position: Vector2(0, 0),
       ),
     );
@@ -77,27 +81,23 @@ class Bird extends SpriteAnimationComponent with HasGameRef<FlappyBirdGame>, Key
     return true;
   }
 
-  void jump() {
-    if (!isDead) {
-      velocityY = jumpVelocity;
-    }
-  }
-
   @override
   void onCollisionStart(
       Set<Vector2> intersectionPoints,
       PositionComponent other,
   ) {
     super.onCollisionStart(intersectionPoints, other);
-    if (other is Pipe) {
+    if (other is Pipe || other is ScreenHitbox) {
       isDead = true;
       velocityY = 0;
-      // game.pauseGame();
-      game.isPaused = true;
-      game.overlays.add('restart');
+      game.restartGame();
     }
   }
 
-
+  void jump() {
+    if (!isDead) {
+      velocityY = jumpVelocity;
+    }
+  }
 
 }
