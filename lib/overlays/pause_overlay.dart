@@ -13,7 +13,7 @@ class PauseOverlay extends StatelessWidget {
       child: Center(
         child: ElevatedButton(
           onPressed: () {
-            game.resumeGame();
+            game.resume();
           },
           child: const Text('Resume'),
         ),

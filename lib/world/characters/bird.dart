@@ -2,8 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flappy_bird/game.dart';
-import 'package:flappy_bird/world/objects/pipe.dart';
-import 'package:flutter/material.dart';
+import 'package:flappy_bird/world/objects/pipeline.dart';
 import 'package:flutter/services.dart';
 
 
@@ -13,18 +12,20 @@ class Bird extends SpriteAnimationComponent with
     CollisionCallbacks,
     TapCallbacks {
 
-  double gravity = 1000;
-  double jumpVelocity = -300;
-  double velocityY = 0;
-  double maxFallSpeed =  500;
-  bool isDead = false;
+  final double _gravity = 1000;
+  final double _jumpVelocity = -300;
+  final double _maxFallSpeed =  500;
+  double _velocityY = 0;
+  bool _isDead = false;
+
+  bool get isDead => _isDead;
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    debugMode = true;
-    debugColor = Colors.transparent;
+    // debugMode = true;
+    // debugColor = Colors.transparent;
 
     final worldSize = gameRef.size;
 
@@ -56,20 +57,22 @@ class Bird extends SpriteAnimationComponent with
   void update(double dt) {
     super.update(dt);
 
-    if (isDead) return;
-
-    velocityY += gravity * dt;
-
-    if (velocityY > maxFallSpeed) {
-      velocityY = maxFallSpeed;
+    if (_isDead || game.isPaused) {
+      return;
     }
 
-    position.y += velocityY * dt;
+    _velocityY += _gravity * dt;
 
-    angle = velocityY / 500;
+    if (_velocityY > _maxFallSpeed) {
+      _velocityY = _maxFallSpeed;
+    }
+
+    position.y += _velocityY * dt;
+
+    angle = _velocityY / 500;
 
     if (position.y > gameRef.size.y) {
-      isDead = true;
+      _isDead = true;
     }
   }
 
@@ -82,21 +85,24 @@ class Bird extends SpriteAnimationComponent with
   }
 
   @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints,
-      PositionComponent other,
-  ) {
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollisionStart(intersectionPoints, other);
+    if (game.isPaused) {
+      return;
+    }
     if (other is Pipe || other is ScreenHitbox) {
-      isDead = true;
-      velocityY = 0;
-      game.restartGame();
+      _isDead = true;
+      _velocityY = 0;
+      game.overlays.add('restart');
+    }
+    else if (other is ScoreCheck) {
+      game.incrementScore();
     }
   }
 
   void jump() {
-    if (!isDead) {
-      velocityY = jumpVelocity;
+    if (!_isDead) {
+      _velocityY = _jumpVelocity;
     }
   }
 

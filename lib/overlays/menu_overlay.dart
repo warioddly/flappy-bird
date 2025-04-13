@@ -13,10 +13,10 @@ class MenuOverlay extends StatelessWidget {
       child: Center(
         child: ElevatedButton(
           onPressed: () {
-            game.isPaused = false;
             if (game.overlays.isActive('menu')) {
               game.overlays.remove('menu');
             }
+            game.resume();
           },
           child: const Text('Start'),
         ),

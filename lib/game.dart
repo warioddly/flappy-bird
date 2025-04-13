@@ -1,19 +1,29 @@
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flappy_bird/overlays/fps.dart';
+import 'package:flappy_bird/overlays/score_overlay.dart';
 import 'package:flappy_bird/world/world.dart';
 
-class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDetection, TapDetector {
-
-  bool isPaused = true;
+class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDetection {
 
   FlappyBirdGame({super.camera});
+
+  bool _isPaused = true;
+
+  bool get isPaused => _isPaused;
+
+  final _scoreOverlay = ScoreOverlay();
+
+  int get score => _scoreOverlay.score;
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    await add(world = MyWorld());
-    await add(FrameRateOverlay());
+    await addAll([
+      world = MyWorld(),
+      FrameRateOverlay(),
+    ]);
+    await world.add(_scoreOverlay);
   }
 
   @override
@@ -22,14 +32,14 @@ class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents, HasCol
     super.update(dt);
   }
 
-  void pauseGame() {
-    isPaused = true;
+  void pause() {
+    _isPaused = true;
     if (overlays.isActive('pause')) return;
     overlays.add('pause');
   }
 
-  void resumeGame() {
-    isPaused = false;
+  void resume() {
+    _isPaused = false;
     if (overlays.isActive('pause')) {
       overlays.remove('pause');
     }
@@ -37,27 +47,21 @@ class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents, HasCol
 
   void togglePause() {
     if (isPaused) {
-      resumeGame();
+      resume();
     } else {
-      pauseGame();
+      pause();
     }
   }
 
-  void restartGame() {
-    isPaused = false;
-    if (overlays.isActive('pause')) {
-      overlays.remove('pause');
-    }
-    if (overlays.isActive('restart')) {
-      overlays.remove('restart');
-    }
+  void restart() {
+    _isPaused = false;
+    overlays.removeAll(['pause', 'restart']);
+     _scoreOverlay.reset();
     onLoad();
   }
 
-  @override
-  void onTap() {
-    super.onTap();
-    (world as MyWorld).bird.jump();
+  void incrementScore() {
+    _scoreOverlay.increment();
   }
 
 }

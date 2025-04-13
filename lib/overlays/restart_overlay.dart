@@ -16,7 +16,7 @@ class RestartOverlay extends StatelessWidget {
       child: Center(
         child: ElevatedButton(
           onPressed: () {
-            game.restartGame();
+            game.restart();
           },
           child: const Text('Restart'),
         ),
