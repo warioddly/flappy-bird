@@ -93,7 +93,9 @@ class Bird extends SpriteAnimationComponent with
     if (other is Pipe || other is ScreenHitbox) {
       _isDead = true;
       _velocityY = 0;
-      game.overlays.add('restart');
+      game
+        ..pause()
+        ..overlays.add('restart');
     }
     else if (other is ScoreCheck) {
       game.incrementScore();

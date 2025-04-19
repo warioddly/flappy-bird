@@ -42,9 +42,7 @@ class RestartOverlay extends StatelessWidget {
               const SizedBox(height: 16),
 
               IconButton(
-                onPressed: () {
-                  game.restart();
-                },
+                onPressed: game.restart,
                 icon: const Icon(
                   Icons.refresh,
                   color: Colors.white,

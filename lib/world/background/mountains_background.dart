@@ -1,7 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:flame/parallax.dart';
 
-class MountainsBackground extends ParallaxComponent {
+class MountainsBackground extends ParallaxComponent  {
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -30,5 +31,12 @@ class MountainsBackground extends ParallaxComponent {
 
   }
 
+  @override
+  void update(double dt) {
+    if (game.paused) {
+      return;
+    }
+    super.update(dt);
+  }
 
 }

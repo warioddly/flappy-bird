@@ -8,9 +8,7 @@ class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents, HasCol
 
   FlappyBirdGame({super.camera});
 
-  bool _isPaused = true;
-
-  bool get isPaused => _isPaused;
+  bool get isPaused => paused;
 
   final _scoreOverlay = ScoreOverlay();
 
@@ -26,23 +24,12 @@ class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents, HasCol
     await world.add(_scoreOverlay);
   }
 
-  @override
-  void update(double dt) {
-    // if (isPaused) return;
-    super.update(dt);
-  }
-
   void pause() {
-    _isPaused = true;
-    if (overlays.isActive('pause')) return;
-    overlays.add('pause');
+    paused = true;
   }
 
   void resume() {
-    _isPaused = false;
-    if (overlays.isActive('pause')) {
-      overlays.remove('pause');
-    }
+    paused = false;
   }
 
   void togglePause() {
@@ -54,8 +41,8 @@ class FlappyBirdGame extends FlameGame with HasKeyboardHandlerComponents, HasCol
   }
 
   void restart() {
-    _isPaused = false;
-    overlays.removeAll(['pause', 'restart']);
+    paused = false;
+    overlays.removeAll(['restart']);
      _scoreOverlay.reset();
     onLoad();
   }
